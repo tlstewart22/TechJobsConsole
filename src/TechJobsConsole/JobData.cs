@@ -38,7 +38,7 @@ namespace TechJobsConsole
             return values;
         }
 
-        public static List<Dictionary<string, string>> FindByColumnAndValue(string column, string value)
+        public static List<Dictionary<string, string>> FindByValue(string value)
         {
             // load data, if not already loaded
             LoadData();
@@ -47,14 +47,50 @@ namespace TechJobsConsole
 
             foreach (Dictionary<string, string> row in AllJobs)
             {
-                string aValue = row[column];
-
-                if (aValue.Contains(value))
+                foreach (KeyValuePair<string, string> itemline in row)
                 {
-                    jobs.Add(row);
+                    if (itemline.Value.ToLower().Contains(value.ToLower()))
+                    {
+                        if (!jobs.Contains(row))
+                            jobs.Add(row);
+                    }
                 }
             }
 
+            return jobs;
+        }
+
+        public static List<Dictionary<string, string>> FindByColumnAndValue(string column, string value)
+        {
+            // load data, if not already loaded
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+            if (column == "all")
+            {
+                foreach (Dictionary<string, string> row in AllJobs)
+                {
+                    foreach (KeyValuePair<string, string> itemline in row)
+                    {
+                        if (itemline.Value.ToLower().Contains(value.ToLower()))
+                        {
+                            string aValue = row[column];
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (Dictionary<string, string> row in AllJobs)
+                {
+                    string aValue = row[column];
+
+                    if (aValue.ToLower().Contains(value.ToLower()))
+                    {
+                        jobs.Add(row);
+                    }
+                }
+            }
             return jobs;
         }
 
